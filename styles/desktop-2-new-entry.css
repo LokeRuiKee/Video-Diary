@@ -283,6 +283,7 @@ body {
   border: solid 0.1rem #000000;
   box-sizing: border-box;
 }
+
 .desktop-2-new-entry-zeM .auto-group-2j9h-13f .auto-group-uypq-C9P .auto-group-2ahh-tK3 {
   width: 46rem;
   height: 24rem;
@@ -303,6 +304,13 @@ body {
   border: solid 0.1rem #000000;
   box-sizing: border-box;
 }
+
+.auto-group-2ahh-tK3 video {
+  width: 100%; /* Set the width to cover the entire width of the frame */
+  height: 100%; /* Set the height to cover the entire height of the frame */
+  object-fit: cover; /* Make the video cover the entire area of the frame without distorting its aspect ratio */
+}
+
 .desktop-2-new-entry-zeM .auto-group-2j9h-13f .auto-group-uypq-C9P .auto-group-mid1-j4m {
   width: 42.9rem;
   height: 3.4rem;
