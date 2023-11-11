@@ -59,7 +59,11 @@
         <div class="upload-button-nhF">Upload</div>
       </div>
       <div class="auto-group-2ahh-tK3">
-        <video autoplay></video> <!-- Add video element -->
+        <video id="cameraFeed" autoplay></video>
+      </div>
+      
+      <div class="playback-container">
+        <video id="playback" controls></video>
       </div>
       <div class="auto-group-mid1-j4m">
         <div class="record-button-FYu">Record</div>
@@ -73,7 +77,8 @@
 
 <script>
   // JavaScript code goes here...
-  const video = document.querySelector('.auto-group-2ahh-tK3 video'); // Select the video element
+  const cameraFeed = document.querySelector('#cameraFeed'); // Select the video element
+  const playback = document.querySelector('#playback'); // Add this line
   const recordButton = document.querySelectorAll('.auto-group-mid1-j4m .record-button-FYu')[1]; // Select the second record button
   let stream, mediaRecorder;
   let recordedChunks = [];
@@ -91,10 +96,10 @@
     mediaRecorder.onstop = () => {
       const recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
       const url = URL.createObjectURL(recordedBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'recorded-video.webm';
-      link.click();
+
+      // Set the src of the playback video element to the URL of the recorded video
+      playback.src = url; // Add this line
+
       recordedChunks = [];
     };
   } else {
@@ -106,10 +111,12 @@
   recordButton.addEventListener('click', toggleRecording);
 
   navigator.mediaDevices.getUserMedia({ video: true })
-    .then(mediaStream => {
-      stream = mediaStream;
-      video.srcObject = stream; // Set the srcObject of the video element to the user's camera stream
-      video.play();
-    })
-    .catch(error => console.error('getUserMedia error:', error));
+  .then(mediaStream => {
+    stream = mediaStream;
+    cameraFeed.srcObject = stream; // Set the srcObject of the video element to the user's camera stream
+    cameraFeed.play().catch(error => {
+      console.error('Error starting video playback:', error);
+    });
+  })
+  .catch(error => console.error('getUserMedia error:', error));
 </script>
