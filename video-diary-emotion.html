@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Video Diary Emotion</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%3A700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit%3A600%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A600%2C700"/>
+  <link rel="stylesheet" href="./styles/video-diary-emotion.css"/>
+</head>
+<body>
+<div class="video-diary-emotion-42V">
+  <div class="group-33025-nz5">
+    <div class="rectangle-81-kvu">
+    </div>
+    <div class="group-33007-g3s">
+      <div class="logobottom-R1T">
+        <img class="mask-group-NhP" src="./assets/mask-group-SRF.png"/>
+        <p class="mental-mastery-iWM">mental mastery</p>
+      </div>
+      <div class="auto-group-sqho-c5w">
+        <div class="navtop-jAZ">
+          <p class="home-rW5">Home</p>
+          <p class="about-PW1">About</p>
+          <p class="feature-vkq">Feature</p>
+        </div>
+        <div class="contactusbutton-sAH">CONTACT US</div>
+      </div>
+    </div>
+  </div>
+  <div class="auto-group-wt8m-Kny">
+    <div class="group-33033-4Em">
+      <div class="your-entrys-emotion-analysis-pDw">Your entry’s emotion analysis</div>
+      <div class="group-33032-sxu">
+        <div class="group-33030-q93">
+          <video controls>
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="auto-group-omzr-iCq">Loading emotion analysis result...</div>
+        <button class="next-button">Next</button>
+      </div>
+    </div>
+    <img class="vector-1-mS1" src="./assets/vector-1-vTT.png"/>
+  </div>
+</div>
+</body>
+
+<script>
+window.onload = function() {
+  // Fetch the latest video filename from latest_video.php
+  fetch('http://localhost/AppDev/VideoDiary/latest_video.php')
+    .then(response => response.text())
+    .then(latest_file => {
+
+      // Find the video element
+      const video = document.querySelector('.group-33030-q93 video');
+
+      // Set the source of the video element to the latest video
+      video.src = 'http://localhost/AppDev/VideoDiary/uploads/annotated/' + latest_file;
+      
+      // Load the video
+      video.load();
+
+      // Send a request to your server-side script to get the most common emotion
+      return fetch('http://localhost/AppDev/VideoDiary/run_fer.php')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(most_common_emotion_texts => {
+          // Select the auto-group-omzr-iCq div
+          let outputDiv = document.querySelector('.auto-group-omzr-iCq');
+
+          // Replace the 'Loading emotion analysis result...' text with the most common emotion
+          outputDiv.textContent =  most_common_emotion_texts;
+
+          // Make a POST request to update_emotion.php
+          return fetch('update_emotion.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `videoID=${latest_file}&emotion=${most_common_emotion_texts}`,
+          });
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(log_response => {
+          console.log(log_response);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+
+  // Navigate to mood enhance page
+  document.querySelector('.next-button').addEventListener('click', function() {
+    window.location.href = 'http://localhost/AppDev/VideoDiary/video-diary-mood-enhance.html';
+  });
+}
+</script>
+

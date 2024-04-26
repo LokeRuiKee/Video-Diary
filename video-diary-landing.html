@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Video Diary Landing</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit%3A600%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A600%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%3A700"/>
+  <link rel="stylesheet" href="./styles/video-diary-landing.css"/>
+</head>
+<body>
+<div class="video-diary-landing-fvZ">
+  <div class="group-33022-Ut1">
+    <div class="rectangle-81-mEq">
+    </div>
+    <div class="group-33007-2gZ">
+      <div class="logobottom-LhF">
+        <img class="mask-group-Vq3" src="./assets/mask-group.png"/>
+        <p class="mental-mastery-bNH">mental mastery</p>
+      </div>
+      <div class="auto-group-fbtd-Sth">
+        <div class="navtop-xc9">
+          <p class="home-V6H">Home</p>
+          <p class="about-Mnh">About</p>
+          <p class="feature-6kH">Feature</p>
+        </div>
+        <div class="contactusbutton-Dpu">CONTACT US</div>
+      </div>
+    </div>
+  </div>
+  <img class="vector-1-GoB" src="./assets/vector-1-gr5.png"/>
+  <div class="group-33020-baZ">
+    <div class="rectangle-130-jAy">
+    </div>
+    <img class="videocameraperspectivemattes-FQD" src="./assets/videocameraperspectivemattes.png"/>
+    <div class="video-diary-xZX">Video Diary</div>
+    <button class="buttonview-DEZ">New entry</button>
+    <button class="buttonview-Teh">dashboard</button>
+    <button class="buttonview-js7">manage</button>
+    <button class="buttonview-payment">payment</button>
+  </div>
+</div>
+</body>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  document.querySelector('.buttonview-DEZ').addEventListener('click', function() {
+    window.location.href = 'http://localhost/AppDev/VideoDiary/video-diary-entry.html';
+  });
+  document.querySelector('.buttonview-Teh').addEventListener('click', function() {
+    window.location.href = 'http://localhost/AppDev/VideoDiary/video-diary-dashboard0.html';
+  });
+  document.querySelector('.buttonview-js7').addEventListener('click', function() {
+    window.location.href = 'http://localhost/AppDev/VideoDiary/video-diary-manage.html';
+  });
+  
+  // initialise stripe
+  var stripe = Stripe('pk_test_51OWX4PJgoggQ8hJNcVbyN37oOHGcCw3fWNWS1PCHjmlXGcassEtK64kaTU2qFjnWk5wPgr8hazgTNBZvQVHWK4Aj00zawOuYts');  
+
+  document.querySelector('.buttonview-payment').addEventListener('click', function(e) {
+  // Create a new Checkout Session using the server-side endpoint you
+  // created in step 4.
+  fetch('/AppDev/VideoDiary/payment.php', {
+    method: 'POST',
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(session) {
+    return stripe.redirectToCheckout({ sessionId: session.id });
+  })
+  .then(function(result) {
+    // If redirectToCheckout fails due to a browser or network
+    // error, you should display the localized error message to your
+    // customer using error.message.
+    if (result.error) {
+      alert(result.error.message);
+    }
+  })
+  .catch(function(error) {
+    console.error('Error:', error);
+  });
+});
+</script>

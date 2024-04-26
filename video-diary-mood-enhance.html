@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Video Diary Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A600%2C700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%3A700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit%3A600%2C700"/>
+  <link rel="stylesheet" href="./styles/video-diary-mood-enhance.css"/>
+</head>
+<body>
+<div class="video-diary-dashboard-3s7">
+  <div class="group-33023-xz5">
+    <div class="rectangle-81-7c5">
+    </div>
+    <div class="group-33007-3Eq">
+      <div class="logobottom-nCR">
+        <img class="mask-group-LUq" src="./assets/mask-group-TNy.png"/>
+        <p class="mental-mastery-sDs">mental mastery</p>
+      </div>
+      <div class="auto-group-lm5s-Z6h">
+        <div class="navtop-c4y">
+          <p class="home-Kzy">Home</p>
+          <p class="about-TLV">About</p>
+          <p class="feature-ag1">Feature</p>
+        </div>
+        <div class="contactusbutton-KNh">CONTACT US</div>
+      </div>
+    </div>
+  </div>
+  <button class="next-button">Next</button>
+  <div class="auto-group-nust-yi9">
+  </div>
+</div>
+</body>
+
+<script>
+  fetch('get_emotion_from_database.php')
+      .then(response => response.text())
+      .then(data => {
+          console.log('Response text:', data); // Log the data
+  
+          // Try to parse the response text as JSON
+          const jsonData = JSON.parse(data);
+          
+          if (jsonData.emotion === 'sad' || jsonData.emotion === 'angry' || jsonData.emotion === 'neutral' || jsonData.emotion === 'disgust' || jsonData.emotion === 'fear') {
+              // Create a new img element
+              const img = document.createElement('img');
+  
+              // Set the source of the img element to the image URL
+              img.src = jsonData.imageUrl;
+  
+              // Set the alt attribute of the img element
+              img.alt = 'Happy Image';
+  
+              console.log('Image element:', img); // Log the img element
+  
+              // Select the div with the class 'auto-group-nust-yi9'
+              const div = document.querySelector('.auto-group-nust-yi9');
+  
+              // Append the img element to the div
+              div.appendChild(img);
+          }
+          else {
+              // Create a new iframe element
+              const iframe = document.createElement('iframe');
+  
+              // Set the source of the iframe to the YouTube video URL
+              iframe.src = 'https://www.youtube.com/embed/B7H1noB47xs';
+  
+              // Set the width and height of the iframe
+              iframe.width = '560';
+              iframe.height = '315';
+
+              // Set additional properties of the iframe
+              iframe.title = 'YouTube video player';
+              iframe.frameBorder = '0';
+              iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+              iframe.allowFullscreen = true;
+  
+              console.log('Iframe element:', iframe); // Log the iframe element
+  
+              // Select the div with the class 'auto-group-nust-yi9'
+              const div = document.querySelector('.auto-group-nust-yi9');
+  
+              // Append the iframe element to the div
+              div.appendChild(iframe);
+          }
+      })
+      .catch(error => console.error('Error:', error));
+  
+  // Navigate to dashboard page
+  document.querySelector('.next-button').addEventListener('click', function() {
+    window.location.href = 'http://localhost/AppDev/VideoDiary/video-diary-dashboard0.html';
+  });
+</script>
